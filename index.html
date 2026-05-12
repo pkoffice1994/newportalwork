@@ -578,36 +578,47 @@
     <div class="modal" style="max-width:820px;padding:28px;">
       <button class="modal-close" onclick="closeDemoModal()">✕</button>
       <h2 style="margin-bottom:4px;">Platform Demo</h2>
-      <p class="modal-sub" style="margin-bottom:16px;">Live preview of our news platform — browse through the sections below.</p>
+      <p class="modal-sub" style="margin-bottom:16px;">See what's inside our AI News Platform — click tabs to explore each section.</p>
 
       <!-- Slide Tabs -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="slideTabs"></div>
 
-      <!-- iframe viewer -->
+      <!-- Image Viewer -->
       <div style="position:relative;width:100%;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);background:#111;">
-        <!-- Mobile frame top bar -->
+        <!-- Browser bar -->
         <div style="background:#1a1a1a;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.08);">
           <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
           <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
           <span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
-          <span id="iframeUrl" style="flex:1;background:rgba(255,255,255,0.05);border-radius:6px;padding:4px 12px;font-size:12px;color:#9ca3af;margin-left:8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">indianews-581a.onrender.com</span>
+          <span id="slideUrlBar" style="flex:1;background:rgba(255,255,255,0.05);border-radius:6px;padding:4px 12px;font-size:12px;color:#9ca3af;margin-left:8px;">indianews-581a.onrender.com</span>
         </div>
-        <iframe id="demoIframe"
-          src="about:blank"
-          style="width:100%;height:480px;border:none;display:block;"
-          title="Platform Demo">
-        </iframe>
-        <div id="iframeLoader" style="position:absolute;inset:40px 0 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#111;gap:12px;">
-          <div style="width:40px;height:40px;border:3px solid rgba(255,255,255,0.1);border-top-color:#ef4444;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-          <p style="color:#9ca3af;font-size:14px;">Loading platform...</p>
+
+        <!-- Slide image -->
+        <div style="position:relative;height:460px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <img id="slideImg" src="" alt="Demo Screenshot"
+            style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.4s;"
+            onerror="this.style.display='none';document.getElementById('slideError').style.display='flex'"/>
+          <!-- Fallback if image fails -->
+          <div id="slideError" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0a0a0a;">
+            <div style="font-size:48px;">📰</div>
+            <p style="color:#9ca3af;font-size:15px;" id="slideTitle">Loading...</p>
+            <a id="slideLink" href="https://indianews-581a.onrender.com" target="_blank"
+              style="padding:10px 24px;background:#dc2626;color:#fff;border-radius:10px;text-decoration:none;font-size:14px;font-weight:600;">
+              Open Live Site →
+            </a>
+          </div>
+          <!-- Slide label badge -->
+          <div id="slideBadge" style="position:absolute;bottom:16px;left:16px;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;font-size:14px;font-weight:600;"></div>
+          <!-- Slide counter -->
+          <div id="slideCounter" style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 14px;font-size:13px;color:#9ca3af;"></div>
         </div>
       </div>
 
       <!-- Nav arrows + CTA -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:12px;flex-wrap:wrap;">
         <div style="display:flex;gap:8px;">
-          <button onclick="changeSlide(-1)" style="padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:16px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">← Prev</button>
-          <button onclick="changeSlide(1)"  style="padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:16px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Next →</button>
+          <button onclick="changeSlide(-1)" style="padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:15px;font-family:inherit;transition:background 0.2s;">← Prev</button>
+          <button onclick="changeSlide(1)"  style="padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:15px;font-family:inherit;transition:background 0.2s;">Next →</button>
         </div>
         <button class="btn-primary" style="font-size:15px;padding:10px 24px;" onclick="closeDemoModal();document.getElementById('contactModal').classList.add('open')">
           🚀 Get Started Now
@@ -639,7 +650,7 @@
           <label>Your Requirements</label>
           <textarea id="fmsg" placeholder="Tell us what you need for your platform..."></textarea>
         </div>
-        <button class="btn-primary" style="width:100%;font-size:16px;padding:14px" onclick="submitForm()">
+        <button class="btn-primary" style="width:100%;font-size:16px;padding:14px" onclick="submitForm(this)">
           📩 Submit
         </button>
       </div>
@@ -653,78 +664,109 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
+    /* ── EmailJS ── */
     const EMAILJS_PUBLIC_KEY  = '82QL898c3ebGGqQnT';
     const EMAILJS_SERVICE_ID  = 'service_30tl7p9';
     const EMAILJS_TEMPLATE_ID = 'template_ii8ybdf';
     emailjs.init(EMAILJS_PUBLIC_KEY);
 
-    /* ── Demo Slideshow ── */
-    const BASE = 'https://indianews-581a.onrender.com';
+    /* ── Demo Image Slideshow ── */
     const slides = [
-      { label: '🏠 Home',       path: '/' },
-      { label: '📰 News',       path: '/news' },
-      { label: '🗞️ E-Paper',   path: '/epaper' },
-      { label: '📂 Categories', path: '/categories' },
-      { label: '📞 Contact',    path: '/contact' },
+      {
+        label: '🏠 Home',
+        url: 'indianews-581a.onrender.com/',
+        img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200',
+        desc: 'Homepage — Latest News & Breaking Stories'
+      },
+      {
+        label: '📰 News Feed',
+        url: 'indianews-581a.onrender.com/news',
+        img: 'https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?q=80&w=1200',
+        desc: 'News Feed — All Categories & Articles'
+      },
+      {
+        label: '🗞️ E-Paper',
+        url: 'indianews-581a.onrender.com/epaper',
+        img: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1200',
+        desc: 'E-Paper — Digital Newspaper Experience'
+      },
+      {
+        label: '📊 Analytics',
+        url: 'indianews-581a.onrender.com/analytics',
+        img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200',
+        desc: 'Analytics Dashboard — Traffic & Engagement'
+      },
+      {
+        label: '💰 Ad Manager',
+        url: 'indianews-581a.onrender.com/ads',
+        img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200',
+        desc: 'Ad Management — Revenue & Slot Tracking'
+      },
     ];
-    let currentSlide = 0;
 
-    function buildTabs() {
-      const container = document.getElementById('slideTabs');
-      container.innerHTML = '';
-      slides.forEach((s, i) => {
-        const btn = document.createElement('button');
-        btn.textContent = s.label;
-        btn.onclick = () => goToSlide(i);
-        btn.style.cssText = `padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);
-          background:${i===currentSlide?'#dc2626':'rgba(255,255,255,0.05)'};
-          color:#fff;cursor:pointer;font-size:13px;font-family:inherit;transition:background 0.2s;`;
-        container.appendChild(btn);
-      });
-    }
+    let cur = 0;
 
-    function goToSlide(i) {
-      currentSlide = (i + slides.length) % slides.length;
-      const url = BASE + slides[currentSlide].path;
-      const iframe = document.getElementById('demoIframe');
-      const loader = document.getElementById('iframeLoader');
-      const urlBar = document.getElementById('iframeUrl');
-      loader.style.display = 'flex';
-      iframe.src = url;
-      urlBar.textContent = 'indianews-581a.onrender.com' + slides[currentSlide].path;
-      iframe.onload = () => { loader.style.display = 'none'; };
+    function renderSlide() {
+      const s = slides[cur];
+      const img = document.getElementById('slideImg');
+      const err = document.getElementById('slideError');
+      img.style.opacity = '0';
+      img.style.display = 'block';
+      err.style.display = 'none';
+      img.src = s.img;
+      img.onload  = () => { img.style.opacity = '1'; };
+      img.onerror = () => { img.style.display = 'none'; err.style.display = 'flex'; };
+      document.getElementById('slideBadge').textContent   = s.desc;
+      document.getElementById('slideCounter').textContent = (cur + 1) + ' / ' + slides.length;
+      document.getElementById('slideUrlBar').textContent  = s.url;
+      document.getElementById('slideTitle').textContent   = s.label;
+      document.getElementById('slideLink').href = 'https://' + s.url;
       buildTabs();
     }
 
-    function changeSlide(dir) { goToSlide(currentSlide + dir); }
+    function buildTabs() {
+      const c = document.getElementById('slideTabs');
+      c.innerHTML = '';
+      slides.forEach((s, i) => {
+        const b = document.createElement('button');
+        b.textContent = s.label;
+        b.onclick = () => { cur = i; renderSlide(); };
+        b.style.cssText = 'padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);' +
+          'background:' + (i === cur ? '#dc2626' : 'rgba(255,255,255,0.05)') + ';' +
+          'color:#fff;cursor:pointer;font-size:13px;font-family:inherit;transition:background 0.2s;';
+        c.appendChild(b);
+      });
+    }
+
+    function changeSlide(dir) {
+      cur = (cur + dir + slides.length) % slides.length;
+      renderSlide();
+    }
 
     function openDemoModal() {
       document.getElementById('demoModal').classList.add('open');
-      if (document.getElementById('demoIframe').src === 'about:blank') {
-        goToSlide(0);
-      }
+      cur = 0;
+      renderSlide();
     }
 
     function closeDemoModal() {
       document.getElementById('demoModal').classList.remove('open');
-      // pause iframe to stop background loading
-      document.getElementById('demoIframe').src = 'about:blank';
-      document.getElementById('iframeLoader').style.display = 'flex';
-      currentSlide = 0;
     }
 
     buildTabs();
 
     /* ── Contact Form ── */
-    function submitForm() {
+    function submitForm(btn) {
       const name  = document.getElementById('fname').value.trim();
       const email = document.getElementById('femail').value.trim();
       const phone = document.getElementById('fphone').value.trim();
       const msg   = document.getElementById('fmsg').value.trim();
 
-      if (!name || !email) { alert('Name and Email are required!'); return; }
+      if (!name || !email) {
+        alert('Name and Email are required!');
+        return;
+      }
 
-      const btn = event.target;
       btn.textContent = '⏳ Sending...';
       btn.disabled = true;
 
@@ -735,13 +777,13 @@
         message:    msg   || 'No message',
         reply_to:   email,
       }).then(() => {
-        document.getElementById('contactForm').style.display = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
+        document.getElementById('contactForm').style.display  = 'none';
+        document.getElementById('formSuccess').style.display  = 'block';
       }).catch((err) => {
         console.error('EmailJS error:', err);
         btn.textContent = '📩 Submit';
         btn.disabled = false;
-        alert('Something went wrong! Please try again.');
+        alert('Something went wrong! Please try again later.');
       });
     }
   </script>

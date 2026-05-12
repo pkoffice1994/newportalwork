@@ -494,7 +494,7 @@
         </p>
         <div class="btn-group">
           <button class="btn-primary" onclick="document.getElementById('demoModal').classList.add('open')">▶ Watch Demo</button>
-          <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">🔍 Live Preview</button>
+          <button class="btn-secondary" onclick="window.open('https://indianews-581a.onrender.com','_blank')">🔍 Live Preview</button>
         </div>
         <div class="stats">
           <div class="stat-card"><h3>364+</h3><p>Articles</p></div>
@@ -641,16 +641,45 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
+    // ── EmailJS config ── apni values neeche daalo ──
+    const EMAILJS_PUBLIC_KEY  = 'YAHAN_APNI_PUBLIC_KEY';   // Step 3 se
+    const EMAILJS_SERVICE_ID  = 'YAHAN_APNA_SERVICE_ID';   // Step 4 se
+    const EMAILJS_TEMPLATE_ID = 'YAHAN_APNA_TEMPLATE_ID';  // Step 5 se
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
     function submitForm() {
-      const name = document.getElementById('fname').value.trim();
+      const name  = document.getElementById('fname').value.trim();
       const email = document.getElementById('femail').value.trim();
+      const phone = document.getElementById('fphone').value.trim();
+      const msg   = document.getElementById('fmsg').value.trim();
+
       if (!name || !email) {
         alert('Naam aur Email zaroori hai!');
         return;
       }
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
+
+      const btn = event.target;
+      btn.textContent = '⏳ Bhej raha hoon...';
+      btn.disabled = true;
+
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        from_name:  name,
+        from_email: email,
+        phone:      phone || 'Nahi diya',
+        message:    msg   || 'Koi message nahi',
+        reply_to:   email,
+      }).then(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }).catch((err) => {
+        console.error('EmailJS error:', err);
+        btn.textContent = '📩 Submit Karo';
+        btn.disabled = false;
+        alert('Kuch error aaya! Thodi der baad try karo.');
+      });
     }
   </script>
 
